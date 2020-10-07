@@ -31,6 +31,22 @@ df <- df %>%
 
 names(df) <- c("school", "score", "college", "white", "el")
 
+###create a contextual/school-level variable from the "college" variable representing the proportion of ###
+###  students in schools whose parents graduated from college ###
+
+tabulation <- df %>%
+  group_by(school) %>%
+  count(college) %>%
+  mutate(total = sum(n)) %>%
+  filter(college==1) %>%
+  mutate(prop_college = n/total) %>%
+  select("school", "prop_college")
+  
+#merge with prop_college variable into data set
+
+df <- full_join(df, tabulation, by = "school")
+
+
 ###Export data as .csv###
 write.csv(df,  "~/R/EdSurvey_demo/artificial-NAEP-data.csv")
 
