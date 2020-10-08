@@ -42,10 +42,13 @@ tabulation <- df %>%
   mutate(prop_college = n/total) %>%
   select("school", "prop_college")
   
-#merge with prop_college variable into data set
+### merge with prop_college variable into data set ###
 
-df <- full_join(df, tabulation, by = "school")
+df <- full_join(df, tabulation, by = "school") 
 
+### remove cases with missing values (about 3% of cases overall) ###
+
+df <- na.omit(df)
 
 ###Export data as .csv###
 write.csv(df,  "~/R/EdSurvey_demo/artificial-NAEP-data.csv")
